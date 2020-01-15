@@ -1,0 +1,13 @@
+{
+    "iso_url":  "file:///C:/iso/CentOS-7-x86_64-Everything-1908.iso",
+    "iso_checksum_type": "sha256",
+    "iso_checksum": "bd5e6ca18386e8a8e0b5a9e906297b5610095e375e4d02342f07f32022b13acf",
+    "vm_name": "packer-centos7-1908",
+    "disk_size": "10240",    
+    "switch_name": "vSwitch",
+    "output_directory": "c:\\Packer\\Centos7-1908",    
+    "vlan_id": "",
+    "root_password_encrypted": "<ENCRYPTED ROOT PASSWORD HERE>",
+    "ssh_password": "password",
+    "provision_script_options": ""
+  }

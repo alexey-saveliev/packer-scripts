@@ -1,0 +1,60 @@
+{
+  "builders": [
+    {
+      "type": "hyperv-iso",
+      "vm_name": "{{ user `vm_name` }}",
+      "temp_path": ".",
+      "iso_url": "{{ user `iso_url` }}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "disk_block_size": "1",
+      "communicator": "ssh",
+      "ssh_username": "root",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_timeout" : "4h",
+      "shutdown_timeout": "30m",
+      "shutdown_command": "sudo -S shutdown -P now",
+      "memory": 2048,
+      "enable_dynamic_memory": "true",
+      "cpus": 4,
+      "generation": 2,
+      "switch_name": "{{user `switch_name`}}",
+      "mac_address": "00155d017716",
+      "vlan_id": "{{user `vlan_id`}}",
+      "http_directory": "./extra/files",
+      "boot_wait": "5s",
+      "boot_command": [
+        "c  setparams 'kickstart' <enter> linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL=CentOS\\x207\\x20x86_64 inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/gen2-centos/ks.cfg<enter> initrdefi /images/pxeboot/initrd.img<enter> boot<enter>"
+      ],
+      "guest_additions_mode":"disable",
+      "enable_secure_boot": false,
+      "output_directory": "{{ user `output_directory` }}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [ "yum -y install cloud-init",
+                  "usermod -p '{{ user `root_password_encrypted`}}' root"
+                ]
+    },    
+    {
+      "type": "file",
+      "source": "extra/files/gen2-centos/cloud.cfg",
+      "destination": "/etc/cloud/cloud.cfg"
+    }
+  ],
+  "variables": {
+    "iso_url":  "",
+    "iso_checksum_type": "none",
+    "iso_checksum": "",
+    "switch_name": "",
+    "vm_name": "",
+    "disk_size": "70000",
+    "vlan_id": "",
+    "output_directory": "",
+    "ssh_password": "",
+    "provision_script_options": ""
+  }
+}
